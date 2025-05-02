@@ -1,0 +1,39 @@
+#include "stm32g474xx.h"
+
+uint32_t count = 0;
+uint32_t pressed1 = 1;
+uint32_t time = 300000;
+uint32_t click = 0;
+
+int main(void) {
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIODEN;
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN;
+
+	GPIOD->MODER &= ~(GPIO_MODER_MODE9_Msk | GPIO_MODER_MODE10_Msk
+			| GPIO_MODER_MODE11_Msk | GPIO_MODER_MODE12_Msk);
+	GPIOD->MODER |= 1 << GPIO_MODER_MODE9_Pos | 1 << GPIO_MODER_MODE10_Pos
+			| 1 << GPIO_MODER_MODE11_Pos | 1 << GPIO_MODER_MODE12_Pos;
+
+	GPIOB->MODER &= ~(GPIO_MODER_MODE12_Msk);
+	GPIOB->MODER |= 0 << GPIO_MODER_MODE12_Pos;
+
+	while (1) {
+		if ((GPIOB->IDR & GPIO_IDR_ID12) == 0 ){
+			click++;
+		}
+		if(GPIOB->IDR & GPIO_IDR_ID12 && click < time && click > 0)
+			{
+			GPIOD->ODR &= ~(GPIO_ODR_OD9 | GPIO_ODR_OD10
+								| GPIO_ODR_OD11 | GPIO_ODR_OD12);
+						count +=512;
+						GPIOD->ODR |= count;
+						click = 0;
+			}
+			else if(GPIOB->IDR & GPIO_IDR_ID12 &&  click > time)
+		{
+			GPIOD->ODR &= 0b0;
+			click = 0;
+			count = 0;
+		}
+	}
+}

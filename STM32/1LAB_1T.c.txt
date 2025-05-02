@@ -1,0 +1,66 @@
+#include "stm32g474xx.h"
+
+uint32_t pressed = 1;
+void dummy_delay(uint32_t duration);
+void defeat();
+void victory();
+
+int main(void) {
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN | RCC_AHB2ENR_GPIOEEN;
+
+	GPIOE->MODER &= ~(GPIO_MODER_MODE3_Msk | GPIO_MODER_MODE4_Msk
+			| GPIO_MODER_MODE5_Msk | GPIO_MODER_MODE6_Msk);
+	GPIOE->MODER |= 1 << GPIO_MODER_MODE3_Pos | 1 << GPIO_MODER_MODE4_Pos
+			| 1 << GPIO_MODER_MODE5_Pos | 1 << GPIO_MODER_MODE6_Pos;
+
+	GPIOB->MODER &= ~(GPIO_MODER_MODE12_Msk);
+
+	while (1) {
+		if ((GPIOB->IDR & GPIO_IDR_ID12) == 0) {
+			if (pressed == 0) {
+				pressed = 1;
+			} else
+				pressed = 0;
+		} else if (pressed == 1) {
+			defeat();
+		} else if (pressed == 0) {
+			victory();
+		}
+	}
+}
+
+void dummy_delay(uint32_t duration) {
+	for (uint32_t i = 0; i < duration; ++i)
+		;
+}
+
+void defeat() {
+	GPIOE->ODR |= GPIO_ODR_OD3;
+	dummy_delay(100000);
+	GPIOE->ODR &= ~GPIO_ODR_OD3;
+	GPIOE->ODR |= GPIO_ODR_OD4;
+	dummy_delay(100000);
+	GPIOE->ODR &= ~GPIO_ODR_OD4;
+	GPIOE->ODR |= GPIO_ODR_OD5;
+	dummy_delay(100000);
+	GPIOE->ODR &= ~GPIO_ODR_OD5;
+	GPIOE->ODR |= GPIO_ODR_OD6;
+	dummy_delay(100000);
+	GPIOE->ODR &= ~GPIO_ODR_OD6;
+	GPIOE->ODR |= GPIO_ODR_OD5;
+	dummy_delay(100000);
+	GPIOE->ODR &= ~GPIO_ODR_OD5;
+	GPIOE->ODR |= GPIO_ODR_OD4;
+	dummy_delay(100000);
+	GPIOE->ODR &= ~GPIO_ODR_OD4;
+	GPIOE->ODR |= GPIO_ODR_OD3;
+}
+void victory() {
+	GPIOE->ODR |= GPIO_ODR_OD3 | GPIO_ODR_OD6;
+	dummy_delay(200000);
+	GPIOE->ODR &= ~(GPIO_ODR_OD3 | GPIO_ODR_OD6);
+	dummy_delay(200000);
+	GPIOE->ODR |= GPIO_ODR_OD4 | GPIO_ODR_OD5;
+	dummy_delay(200000);
+	GPIOE->ODR &= ~(GPIO_ODR_OD4 | GPIO_ODR_OD5);
+}
