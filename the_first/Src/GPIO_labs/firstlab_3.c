@@ -18,22 +18,19 @@ int main(void)
     	if((GPIOB->IDR & GPIO_IDR_ID12) == 0 && counter < 7 && button_is_pressed == 0)
     	{
     		button_is_pressed = 1;
-    		GPIOE->ODR |= (1 << counter);
+    		GPIOE->BSRR |= (1 << counter);
     		counter++;
     	}
     	else if((GPIOB->IDR & GPIO_IDR_ID15) == 0)
     	{
     		for(uint32_t i = 3;i<7;i++)
     		{
-    		GPIOE->ODR &= ~(1 << i);
+            GPIOE->BSRR &= ~(1 << i);
     		}
     		counter = 3;
-    	} else if (GPIOB->IDR & GPIO_IDR_ID12) // Если кнопка отпущена
+    	} else if (GPIOB->IDR & GPIO_IDR_ID12)
         {
             button_is_pressed = 0;
         }
     }
 }
-
-
-

@@ -17,30 +17,32 @@ int main(void) {
 	while (1) {
 		if ((GPIOB->IDR & GPIO_IDR_ID12) == 0) {
 			GPIOD->BSRR = GPIO_BSRR_BS9;
-		} 
+		}
 		else {
 			GPIOD->BSRR = GPIO_BSRR_BR9;
 		}
 
 		if ((GPIOB->IDR & GPIO_IDR_ID13) == 0) {
 			GPIOD->BSRR = GPIO_BSRR_BS10;
-		} 
+		}
 		else {
 			GPIOD->BSRR = GPIO_BSRR_BR10;
 		}
 
 		if ((GPIOB->IDR & GPIO_IDR_ID14) == 0) {
 			GPIOD->BSRR = GPIO_BSRR_BS11;
-		} 
+		}
 		else {
 			GPIOD->BSRR = GPIO_BSRR_BR11;
 		}
 
 		if ((GPIOB->IDR & GPIO_IDR_ID15) == 0) {
 			GPIOD->BSRR = GPIO_BSRR_BS12;
-		} 
+		}
 		else {
 			GPIOD->BSRR = GPIO_BSRR_BR12;
 		}
 	}
 }
+
+

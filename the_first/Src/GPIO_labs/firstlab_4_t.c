@@ -23,15 +23,15 @@ int main(void) {
 		}
 		if(GPIOB->IDR & GPIO_IDR_ID12 && click < time && click > 0)
 			{
-			GPIOD->ODR &= ~(GPIO_ODR_OD9 | GPIO_ODR_OD10
-								| GPIO_ODR_OD11 | GPIO_ODR_OD12);
+			GPIOD->BSRR = GPIO_BSRR_BR9 | GPIO_BSRR_BR10
+								| GPIO_BSRR_BR11 | GPIO_BSRR_BR12;
 						count +=512;
-						GPIOD->ODR |= count;
+						GPIOD->BSRR = count;
 						click = 0;
 			}
 			else if(GPIOB->IDR & GPIO_IDR_ID12 &&  click > time)
 		{
-			GPIOD->ODR &= 0b0;
+			GPIOD->ODR= 0b0;
 			click = 0;
 			count = 0;
 		}

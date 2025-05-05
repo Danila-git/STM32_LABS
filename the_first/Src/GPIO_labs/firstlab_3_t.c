@@ -20,28 +20,34 @@ int main(void) {
 
 	while (1) {
 		if ((GPIOB->IDR & GPIO_IDR_ID12) == 0 && pressed1){
-			GPIOD->ODR &= ~(GPIO_ODR_OD9 | GPIO_ODR_OD10
-					| GPIO_ODR_OD11 | GPIO_ODR_OD12);
+			GPIOD->BSRR = GPIO_BSRR_BR9 | GPIO_BSRR_BR10
+					| GPIO_BSRR_BR11 | GPIO_BSRR_BR12;
 			count +=512;
-			GPIOD->ODR |= count;
+			GPIOD->BSRR = count;
 			pressed1 = 0;
 		}else if(GPIOB->IDR & GPIO_IDR_ID12)
 		{
 			pressed1 = 1;
 		}
 		if ((GPIOB->IDR & GPIO_IDR_ID13) == 0 && pressed2 && count >=512){
-					GPIOD->ODR &= ~(GPIO_ODR_OD9 | GPIO_ODR_OD10
-							| GPIO_ODR_OD11 | GPIO_ODR_OD12);
+			GPIOD->BSRR = GPIO_BSRR_BR9 | GPIO_BSRR_BR10
+								| GPIO_BSRR_BR11 | GPIO_BSRR_BR12;
 					count -=512;
-					GPIOD->ODR |= count;
+					GPIOD->BSRR = count;
 					pressed2 = 0;
 				}else if(GPIOB->IDR & GPIO_IDR_ID13)
 				{
 					pressed2 = 1;
 				}
 		if ((GPIOB->IDR & GPIO_IDR_ID14) == 0){
-							GPIOD->ODR &= 0b0);
+							GPIOD->ODR = 0b0;
 							count = 0;
 		}
 	}
 }
+
+
+
+
+
+
