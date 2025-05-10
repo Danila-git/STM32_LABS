@@ -29,12 +29,12 @@ int main() {
 		} else {
 			defeat();
 		}
-		if (number>=8) {
+		if (number>=points) {
 			if (strncmp(key, key_word, 8) == 0) {
 				victory();
 			} else {
 				defeat();
-				exception++;
+				exception+=1;
 				number = 0;
 			}
 		}
@@ -43,41 +43,38 @@ int main() {
 }
 
 void dummy_delay(uint32_t duration) {
-	for (uint32_t i = 0; i < duration; ++i);
+	for (uint32_t i = 0; i < duration; i+=1);
 }
 
 void victory() {
-	GPIOE->ODR |= GPIO_ODR_OD0 | GPIO_ODR_OD3;
+	GPIOE->BSRR = GPIO_BSRR_BS0 | GPIO_BSRR_BS3;
 	dummy_delay(200000);
-	GPIOE->ODR &= ~(GPIO_ODR_OD0 | GPIO_ODR_OD3);
+	GPIOE->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR3;
 	dummy_delay(200000);
-	GPIOE->ODR |= GPIO_ODR_OD1 | GPIO_ODR_OD2;
+	GPIOE->BSRR = GPIO_BSRR_BS1 | GPIO_BSRR_BS2;
 	dummy_delay(200000);
-	GPIOE->ODR &= ~(GPIO_ODR_OD1 | GPIO_ODR_OD2);
+	GPIOE->BSRR = GPIO_BSRR_BR1 | GPIO_BSRR_BR2;
 }
 void defeat() {
-	for (int i = 0; i <= 4; i++) {
-		GPIOE->ODR |= GPIO_ODR_OD0;
+	for (int i = 0; i <= 4; i+=1) {
+		GPIOE->BSRR = GPIO_BSRR_BS0;
 		dummy_delay(100000);
-		GPIOE->ODR &= ~GPIO_ODR_OD0;
-		GPIOE->ODR |= GPIO_ODR_OD1;
+		GPIOE->BSRR = GPIO_BSRR_BR0;
+		    GPIOE->BSRR = GPIO_BSRR_BS1;
 		dummy_delay(100000);
-		GPIOE->ODR &= ~GPIO_ODR_OD1;
-		GPIOE->ODR |= GPIO_ODR_OD2;
+		GPIOE->BSRR = GPIO_BSRR_BR1;
+			GPIOE->BSRR = GPIO_BSRR_BS2;
 		dummy_delay(100000);
-		GPIOE->ODR &= ~GPIO_ODR_OD2;
-		GPIOE->ODR |= GPIO_ODR_OD3;
+		GPIOE->BSRR = GPIO_BSRR_BR2;
+			GPIOE->BSRR = GPIO_BSRR_BS3;
 		dummy_delay(100000);
-		GPIOE->ODR &= ~GPIO_ODR_OD3;
-		GPIOE->ODR |= GPIO_ODR_OD2;
+		GPIOE->BSRR = GPIO_BSRR_BR3;
+			GPIOE->BSRR = GPIO_BSRR_BS2;
 		dummy_delay(100000);
-		GPIOE->ODR &= ~GPIO_ODR_OD2;
-		GPIOE->ODR |= GPIO_ODR_OD1;
+		GPIOE->BSRR = GPIO_BSRR_BR2;
+			GPIOE->BSRR = GPIO_BSRR_BS1;
 		dummy_delay(100000);
-		GPIOE->ODR &= ~GPIO_ODR_OD1;
-		GPIOE->ODR |= GPIO_ODR_OD0;
-		dummy_delay(100000);
-		GPIOE->ODR &= ~GPIO_ODR_OD0;
+		GPIOE->BSRR = GPIO_BSRR_BR1;
 	}
 }
 
@@ -92,7 +89,7 @@ void try() {
 		GPIOE->BSRR = GPIO_BSRR_BR0;
 		key[number] = 'a';
 		key[number + 1] = '\0';
-		number++;
+		number+=1;
 	}
 	if ((GPIOB->IDR & GPIO_IDR_ID13) == 0) {
 		while((GPIOB->IDR & GPIO_IDR_ID13) == 0)
@@ -102,7 +99,7 @@ void try() {
 				GPIOE->BSRR = GPIO_BSRR_BR1;
 		key[number] = 'b';
 		key[number + 1] = '\0';
-		number++;
+		number+=1;
 	}
 	if ((GPIOB->IDR & GPIO_IDR_ID14) == 0) {
 		while((GPIOB->IDR & GPIO_IDR_ID14) == 0)
@@ -112,7 +109,7 @@ void try() {
 				GPIOE->BSRR = GPIO_BSRR_BR2;
 		key[number] = 'c';
 		key[number + 1] = '\0';
-		number++;
+		number+=1;
 	}
 	if ((GPIOB->IDR & GPIO_IDR_ID15) == 0) {
 		while((GPIOB->IDR & GPIO_IDR_ID15) == 0)
@@ -122,7 +119,7 @@ void try() {
 				GPIOE->BSRR = GPIO_BSRR_BR3;
 		key[number] = 'd';
 		key[number + 1] = '\0';
-		number++;
+		number+=1;
 	}
 	}
 }

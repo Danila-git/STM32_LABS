@@ -1,4 +1,4 @@
-Src/GPIO_labs/firstlab_2.o: ../Src/GPIO_labs/firstlab_2.c \
+Src/Interrupt_labs/secondlab_3_T.o: ../Src/Interrupt_labs/secondlab_3_T.c \
  ../Inc/stm32g474xx.h D:/STM32_LABS/the_first/Inc/CMSIS/core_cm4.h \
  D:/STM32_LABS/the_first/Inc/CMSIS/cmsis_version.h \
  D:/STM32_LABS/the_first/Inc/CMSIS/cmsis_compiler.h \

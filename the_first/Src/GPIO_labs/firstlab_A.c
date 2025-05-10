@@ -62,7 +62,7 @@ int main(void)
 
 void dummy_delay(uint32_t duration)
 {
-        for(uint32_t i = 0; i < duration; ++i);
+        for(uint32_t i = 0; i < duration; i+=1);
 }
 
 

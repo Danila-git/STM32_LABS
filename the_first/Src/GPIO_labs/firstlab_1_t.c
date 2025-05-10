@@ -1,6 +1,7 @@
 #include "stm32g474xx.h"
 
 uint32_t pressed = 1;
+uint32_t button_is_pressed = 0;
 void dummy_delay(uint32_t duration);
 void defeat();
 void victory();
@@ -16,22 +17,25 @@ int main(void) {
 	GPIOB->MODER &= ~(GPIO_MODER_MODE12_Msk);
 
 	while (1) {
-		if ((GPIOB->IDR & GPIO_IDR_ID12) == 0) {
+		if ((GPIOB->IDR & GPIO_IDR_ID12) == 0 && button_is_pressed == 0) {
+			button_is_pressed = 1;
 			if (pressed == 0) {
 				pressed = 1;
 			} else
 				pressed = 0;
-		} else if (pressed == 1) {
-			defeat();
-		} else if (pressed == 0) {
-			victory();
+		}else if(GPIOB->IDR & GPIO_IDR_ID12)
+		{
+			button_is_pressed = 0;
 		}
-	}
+		if (pressed == 1)
+			defeat();
+		 if (pressed == 0)
+			victory();
+}
 }
 
 void dummy_delay(uint32_t duration) {
-	for (uint32_t i = 0; i < duration; ++i)
-		;
+	for (uint32_t i = 0; i < duration; i+=1);
 }
 
 void defeat() {

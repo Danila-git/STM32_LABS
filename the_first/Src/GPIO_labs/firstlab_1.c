@@ -23,5 +23,5 @@ int main(void)
 
 void change(uint32_t amount)
     {
-    	for(uint32_t i = 0; i < amount; ++i);
+    	for(uint32_t i = 0; i < amount; i+=1);
     }

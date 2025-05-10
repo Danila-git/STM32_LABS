@@ -1,4 +1,4 @@
-"./Src/GPIO_labs/firstlab_2.o"
+"./Src/Interrupt_labs/secondlab_3_T.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"
 "./Startup/startup_stm32g474vetx.o"

@@ -1,0 +1,39 @@
+#include "stm32g474xx.h"
+
+int main(void)
+{
+
+    RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN | RCC_AHB2ENR_GPIOEEN;
+    RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+
+    SYSCFG->EXTICR[3] |= SYSCFG_EXTICR4_EXTI14_PB;
+
+    EXTI->IMR1 |= EXTI_IMR1_IM14;
+    EXTI->FTSR1 |= EXTI_FTSR1_FT14;
+    NVIC_EnableIRQ( EXTI15_10_IRQn );
+
+    GPIOB->MODER &= ~GPIO_MODER_MODE14_Msk;
+
+    GPIOE->MODER &= ~GPIO_MODER_MODE2_Msk;
+    GPIOE->MODER |= 1 << GPIO_MODER_MODE2_Pos;
+
+    while (1)
+    {
+
+    }
+}
+
+void EXTI15_10_IRQHandler()
+{
+	if(GPIOE->ODR & GPIO_ODR_OD2)
+		{
+		GPIOE->BSRR = GPIO_BSRR_BR2;
+		}
+	else
+		{
+		GPIOE->BSRR = GPIO_BSRR_BS2;
+		}
+  EXTI->PR1 = EXTI_PR1_PIF14;
+
+}
+

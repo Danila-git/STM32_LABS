@@ -22,17 +22,17 @@ int main(void) {
 		if ((GPIOB->IDR & GPIO_IDR_ID12) == 0 && pressed1){
 			GPIOD->BSRR = GPIO_BSRR_BR9 | GPIO_BSRR_BR10
 					| GPIO_BSRR_BR11 | GPIO_BSRR_BR12;
-			count +=512;
+			count +=0b1000000000;
 			GPIOD->BSRR = count;
 			pressed1 = 0;
 		}else if(GPIOB->IDR & GPIO_IDR_ID12)
 		{
 			pressed1 = 1;
 		}
-		if ((GPIOB->IDR & GPIO_IDR_ID13) == 0 && pressed2 && count >=512){
+		if ((GPIOB->IDR & GPIO_IDR_ID13) == 0 && pressed2 && count >=0b1000000000){
 			GPIOD->BSRR = GPIO_BSRR_BR9 | GPIO_BSRR_BR10
 								| GPIO_BSRR_BR11 | GPIO_BSRR_BR12;
-					count -=512;
+					count -=0b1000000000;
 					GPIOD->BSRR = count;
 					pressed2 = 0;
 				}else if(GPIOB->IDR & GPIO_IDR_ID13)
