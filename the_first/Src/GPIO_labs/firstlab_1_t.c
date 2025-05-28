@@ -29,8 +29,10 @@ int main(void) {
 		}
 		if (pressed == 1)
 			defeat();
+		GPIOE->BSRR = GPIO_BSRR_BR3 | GPIO_BSRR_BR4 | GPIO_BSRR_BR5 | GPIO_BSRR_BR6;
 		 if (pressed == 0)
 			victory();
+		 GPIOE->BSRR = GPIO_BSRR_BR3 | GPIO_BSRR_BR4 | GPIO_BSRR_BR5 | GPIO_BSRR_BR6;
 }
 }
 
@@ -57,7 +59,6 @@ void defeat() {
 		GPIOE->BSRR = GPIO_BSRR_BS4;
 	dummy_delay(100000);
 	GPIOE->BSRR = GPIO_BSRR_BR4;
-		GPIOE->BSRR = GPIO_BSRR_BS3;
 }
 void victory() {
 	GPIOE->BSRR = GPIO_BSRR_BS3 | GPIO_BSRR_BS6;

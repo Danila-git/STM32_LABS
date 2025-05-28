@@ -25,8 +25,7 @@ int main(void)
 }
 
 void EXTI15_10_IRQHandler() {
-	while ((GPIOB->IDR & GPIO_IDR_ID12) == 0 || (GPIOB->IDR & GPIO_IDR_ID13) == 0 || (GPIOB->IDR & GPIO_IDR_ID14) == 0 || (GPIOB->IDR & GPIO_IDR_ID15) == 0) {
-		if ((GPIOB->IDR & GPIO_IDR_ID13) == 0) {
+		if ((GPIOB->IDR & GPIO_IDR_ID12) == 0) {
 			GPIOD->BSRR = GPIO_BSRR_BS1;
 		} else {
 			GPIOD->BSRR = GPIO_BSRR_BR1;
@@ -46,11 +45,7 @@ void EXTI15_10_IRQHandler() {
 		} else {
 			GPIOD->BSRR = GPIO_BSRR_BR4;
 		}
-	}
-	GPIOD->BSRR = GPIO_BSRR_BR1;
-		GPIOD->BSRR = GPIO_BSRR_BR2;
-		GPIOD->BSRR = GPIO_BSRR_BR3;
-		GPIOD->BSRR = GPIO_BSRR_BR4;
 	EXTI->PR1 = EXTI_PR1_PIF13;
 
 }
+

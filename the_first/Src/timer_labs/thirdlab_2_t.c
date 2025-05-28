@@ -1,0 +1,54 @@
+#include "stm32g474xx.h"
+
+uint32_t frec_change = 15999;
+
+int main(void) {
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIODEN | RCC_AHB2ENR_GPIOBEN;
+    RCC->APB1ENR1 |= RCC_APB1ENR1_TIM2EN;
+    RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
+
+	SYSCFG->EXTICR[3] |= SYSCFG_EXTICR4_EXTI12_PB;
+	EXTI->IMR1 |= EXTI_IMR1_IM12;
+	EXTI->FTSR1 |= EXTI_FTSR1_FT12;
+	EXTI->RTSR1 |= EXTI_RTSR1_RT12;
+	NVIC_EnableIRQ( EXTI15_10_IRQn );
+
+	GPIOD->MODER &= ~GPIO_MODER_MODE6_Msk;
+	GPIOD->MODER |= 1 << GPIO_MODER_MODE6_Pos;
+
+	GPIOB->MODER &= ~GPIO_MODER_MODE12_Msk;
+
+	//настройка прерывания на 2 секунды
+	 	TIM2->PSC = frec_change;
+		TIM2->ARR = 1999;
+		TIM2->DIER = TIM_DIER_UIE;
+		TIM2->CR1 |= TIM_CR1_CEN;
+
+		NVIC_EnableIRQ(TIM2_IRQn);
+
+	while (1) {
+}
+}
+
+void TIM2_IRQHandler(void)
+	{
+	 GPIOD->BSRR = GPIO_BSRR_BR6;
+		TIM2->SR &= ~ TIM_SR_UIF;
+	}
+
+
+void EXTI15_10_IRQHandler()
+{
+ if((GPIOB->IDR & GPIO_IDR_ID12) == 0)
+ {
+
+	 TIM2->CNT = 0;
+	    	  TIM2->CR1 |= TIM_CR1_CEN;
+	    	  GPIOD->BSRR = GPIO_BSRR_BS6;
+ }else{
+	 TIM2->CR1 &= ~TIM_CR1_CEN;
+ }
+
+  EXTI->PR1 = EXTI_PR1_PIF12;
+
+}

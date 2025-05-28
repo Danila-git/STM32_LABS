@@ -44,12 +44,15 @@ void EXTI15_10_IRQHandler()
 	if (exception < 3) {
 				try();
 			} else {
+				GPIOE->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2 | GPIO_BSRR_BR3;
 				defeat();
 			}
 			if (pressed1 == 1 && pressed2 == 1 && pressed3 == 1 && pressed4 == 1) {
 				if (strncmp(key, key_word, 5) == 0) {
+					GPIOE->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2 | GPIO_BSRR_BR3;
 					victory();
 				} else {
+					GPIOE->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2 | GPIO_BSRR_BR3;
 					defeat();
 					exception++;
 					pressed1 = 0;
@@ -104,28 +107,24 @@ void try() {
 	if ((GPIOB->IDR & GPIO_IDR_ID12) == 0 && pressed1 == 0) {
 		GPIOE->BSRR = GPIO_BSRR_BS0;
 		key[enter_nums] = 'a';
-		key[enter_nums + 1] = '\0';
 		enter_nums+=1;
 		pressed1 = 1;
 	}
 	if ((GPIOB->IDR & GPIO_IDR_ID13) == 0 && pressed2 == 0) {
 		GPIOE->BSRR = GPIO_BSRR_BS1;
 		key[enter_nums] = 'b';
-		key[enter_nums + 1] = '\0';
 		enter_nums+=1;
 		pressed2 = 1;
 	}
 	if ((GPIOB->IDR & GPIO_IDR_ID14) == 0 && pressed3 == 0) {
 		GPIOE->BSRR = GPIO_BSRR_BS2;
 		key[enter_nums] = 'c';
-		key[enter_nums + 1] = '\0';
 		enter_nums+=1;
 		pressed3 = 1;
 	}
 	if ((GPIOB->IDR & GPIO_IDR_ID15) == 0 && pressed4 == 0) {
 		GPIOE->BSRR = GPIO_BSRR_BS3;
 		key[enter_nums] = 'd';
-		key[enter_nums + 1] = '\0';
 		enter_nums+=1;
 		pressed4 = 1;
 	}

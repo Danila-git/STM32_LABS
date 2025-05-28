@@ -34,8 +34,10 @@ int main() {
 		}
 		if (pressed1 == 1 && pressed2 == 1 && pressed3 == 1 && pressed4 == 1) {
 			if (strncmp(key, key_word, 5) == 0) {
+				GPIOE->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2 | GPIO_BSRR_BR3;
 				victory();
 			} else {
+				GPIOE->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2 | GPIO_BSRR_BR3;
 				defeat();
 				exception+=1;
 				pressed1 = 0;
@@ -87,28 +89,24 @@ void try() {
 	if ((GPIOB->IDR & GPIO_IDR_ID12) == 0 && pressed1 == 0) {
 		GPIOE->BSRR = GPIO_BSRR_BS0;
 		key[number] = 'a';
-		key[number + 1] = '\0';
 		number+=1;
 		pressed1 = 1;
 	}
 	if ((GPIOB->IDR & GPIO_IDR_ID13) == 0 && pressed2 == 0) {
 		GPIOE->BSRR = GPIO_BSRR_BS1;
 		key[number] = 'b';
-		key[number + 1] = '\0';
 		number+=1;
 		pressed2 = 1;
 	}
 	if ((GPIOB->IDR & GPIO_IDR_ID14) == 0 && pressed3 == 0) {
 		GPIOE->BSRR = GPIO_BSRR_BS2;
 		key[number] = 'c';
-		key[number + 1] = '\0';
 		number+=1;
 		pressed3 = 1;
 	}
 	if ((GPIOB->IDR & GPIO_IDR_ID15) == 0 && pressed4 == 0) {
 		GPIOE->BSRR = GPIO_BSRR_BS3;
 		key[number] = 'd';
-		key[number + 1] = '\0';
 		number+=1;
 		pressed4 = 1;
 	}

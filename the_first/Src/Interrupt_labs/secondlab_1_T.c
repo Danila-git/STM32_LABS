@@ -1,9 +1,7 @@
 #include "stm32g474xx.h"
 
 uint32_t turn_on = 0;
-uint32_t pressed1 = 1;
-uint32_t time = 300000;
-uint32_t click = 0;
+uint32_t frec_change = 15999;
 
 int main(void) {
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIODEN | RCC_AHB2ENR_GPIOBEN;
@@ -13,6 +11,7 @@ int main(void) {
 
 	    EXTI->IMR1 |= EXTI_IMR1_IM12;
 	    EXTI->FTSR1 |= EXTI_FTSR1_FT12;
+	    EXTI->RTSR1 |= EXTI_RTSR1_RT12;
 	    NVIC_EnableIRQ( EXTI15_10_IRQn );
 
 	GPIOD->MODER &= ~(GPIO_MODER_MODE9_Msk | GPIO_MODER_MODE10_Msk
@@ -21,7 +20,15 @@ int main(void) {
 			| 1 << GPIO_MODER_MODE11_Pos | 1 << GPIO_MODER_MODE12_Pos;
 
 	GPIOB->MODER &= ~(GPIO_MODER_MODE12_Msk);
+	//частота микроконтроллера 16Mгц
+	RCC->APB1ENR1 |= RCC_APB1ENR1_TIM2EN;
 
+	//настройка прерывания на каждые 2 секунды
+ 	TIM2->PSC = frec_change;
+	TIM2->ARR = 1999;
+	TIM2->DIER = TIM_DIER_UIE;
+
+	NVIC_EnableIRQ(TIM2_IRQn);
 	while (1) {
 
 	}
@@ -29,26 +36,28 @@ int main(void) {
 
 void EXTI15_10_IRQHandler()
 {
-	while((GPIOB->IDR & GPIO_IDR_ID12) == 0 )
+	if((GPIOB->IDR & GPIO_IDR_ID12) == 0 )
 	{
-		click+=1;
+		 TIM2->CNT = 0;
+			    	  TIM2->CR1 |= TIM_CR1_CEN;
+			    	  turn_on += 1;
+			    	  GPIOD->BSRR = GPIO_BSRR_BR9 | GPIO_BSRR_BR10
+			    	  								| GPIO_BSRR_BR11 | GPIO_BSRR_BR12;
+		GPIOD->BSRR = turn_on << 9;
+	}else
+	{
+		TIM2->CR1 &= ~TIM_CR1_CEN;
 	}
-		if(GPIOB->IDR & GPIO_IDR_ID12 && click < time && click > 0)
-			{
-			GPIOD->ODR &= ~(GPIO_ODR_OD9 | GPIO_ODR_OD10
-								| GPIO_ODR_OD11 | GPIO_ODR_OD12);
-						turn_on +=0b1000000000;
-						GPIOD->ODR |= turn_on;
-						click = 0;
-			}
-			else if(GPIOB->IDR & GPIO_IDR_ID12 &&  click > time)
-		{
-			GPIOD->ODR &= 0b0;
-			click = 0;
-			turn_on = 0;
-		}
+	EXTI->PR1 |= EXTI_PR1_PIF12;
 }
-
+void TIM2_IRQHandler(void)
+  {
+	  GPIOD->BSRR = GPIO_BSRR_BR9 | GPIO_BSRR_BR10
+	  								| GPIO_BSRR_BR11 | GPIO_BSRR_BR12;
+		turn_on = 0;
+  	TIM2->CR1 &= ~TIM_CR1_CEN;
+  	TIM2->SR &= ~ TIM_SR_UIF;
+  }
 
 
 

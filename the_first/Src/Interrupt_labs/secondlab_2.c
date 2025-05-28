@@ -9,6 +9,7 @@ int main(void)
 
     EXTI->IMR1 |= EXTI_IMR1_IM13;
     EXTI->FTSR1 |= EXTI_FTSR1_FT13;
+    EXTI->RTSR1 |= EXTI_RTSR1_RT13;
     NVIC_EnableIRQ( EXTI15_10_IRQn );
 
     GPIOB->MODER &= ~GPIO_MODER_MODE13_Msk;
@@ -28,13 +29,16 @@ int main(void)
 
 void EXTI15_10_IRQHandler()
 {
-	while((GPIOB->IDR & GPIO_IDR_ID13) == 0)
+	if((GPIOB->IDR & GPIO_IDR_ID13) == 0)
 	{
 		GPIOE->BSRR = GPIO_BSRR_BS5;
-				GPIOD->BSRR = GPIO_BSRR_BS7;
+						GPIOD->BSRR = GPIO_BSRR_BS7;
 	}
+	if(GPIOB->IDR & GPIO_IDR_ID13)
+	{
 	GPIOE->BSRR = GPIO_BSRR_BR5;
 					GPIOD->BSRR = GPIO_BSRR_BR7;
+	}
   EXTI->PR1 = EXTI_PR1_PIF13;
 
 }

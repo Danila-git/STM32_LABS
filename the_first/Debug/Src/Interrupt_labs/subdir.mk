@@ -5,13 +5,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Src/Interrupt_labs/secondlab_3_T.c 
+../Src/Interrupt_labs/secondlab_1_T.c 
 
 OBJS += \
-./Src/Interrupt_labs/secondlab_3_T.o 
+./Src/Interrupt_labs/secondlab_1_T.o 
 
 C_DEPS += \
-./Src/Interrupt_labs/secondlab_3_T.d 
+./Src/Interrupt_labs/secondlab_1_T.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -21,7 +21,7 @@ Src/Interrupt_labs/%.o Src/Interrupt_labs/%.su Src/Interrupt_labs/%.cyclo: ../Sr
 clean: clean-Src-2f-Interrupt_labs
 
 clean-Src-2f-Interrupt_labs:
-	-$(RM) ./Src/Interrupt_labs/secondlab_3_T.cyclo ./Src/Interrupt_labs/secondlab_3_T.d ./Src/Interrupt_labs/secondlab_3_T.o ./Src/Interrupt_labs/secondlab_3_T.su
+	-$(RM) ./Src/Interrupt_labs/secondlab_1_T.cyclo ./Src/Interrupt_labs/secondlab_1_T.d ./Src/Interrupt_labs/secondlab_1_T.o ./Src/Interrupt_labs/secondlab_1_T.su
 
 .PHONY: clean-Src-2f-Interrupt_labs
 

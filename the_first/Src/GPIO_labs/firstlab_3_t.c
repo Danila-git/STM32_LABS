@@ -5,8 +5,7 @@ uint32_t pressed1 = 1;
 uint32_t pressed2  =1;
 
 int main(void) {
-	RCC->AHB2ENR |= RCC_AHB2ENR_GPIODEN;
-	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN;
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIODEN | RCC_AHB2ENR_GPIOBEN;
 
 	GPIOD->MODER &= ~(GPIO_MODER_MODE9_Msk | GPIO_MODER_MODE10_Msk
 			| GPIO_MODER_MODE11_Msk | GPIO_MODER_MODE12_Msk);
@@ -22,18 +21,18 @@ int main(void) {
 		if ((GPIOB->IDR & GPIO_IDR_ID12) == 0 && pressed1){
 			GPIOD->BSRR = GPIO_BSRR_BR9 | GPIO_BSRR_BR10
 					| GPIO_BSRR_BR11 | GPIO_BSRR_BR12;
-			count +=0b1000000000;
-			GPIOD->BSRR = count;
+			count += 1;
+			GPIOD->BSRR = count << 9;
 			pressed1 = 0;
 		}else if(GPIOB->IDR & GPIO_IDR_ID12)
 		{
 			pressed1 = 1;
 		}
-		if ((GPIOB->IDR & GPIO_IDR_ID13) == 0 && pressed2 && count >=0b1000000000){
+		if ((GPIOB->IDR & GPIO_IDR_ID13) == 0 && pressed2 && count >=1){
 			GPIOD->BSRR = GPIO_BSRR_BR9 | GPIO_BSRR_BR10
 								| GPIO_BSRR_BR11 | GPIO_BSRR_BR12;
-					count -=0b1000000000;
-					GPIOD->BSRR = count;
+					count -=1;
+					GPIOD->BSRR = count << 9;
 					pressed2 = 0;
 				}else if(GPIOB->IDR & GPIO_IDR_ID13)
 				{

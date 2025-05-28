@@ -1,7 +1,0 @@
-D:/STM32_LABS/the_first/Inc/CMSIS/core_cm4.h:1679:22:__NVIC_EnableIRQ	16	static,ignoring_inline_asm
-../Src/Interrupt_labs/secondlab_3_T.c:18:5:main	8	static
-../Src/Interrupt_labs/secondlab_3_T.c:42:6:EXTI15_10_IRQHandler	8	static
-../Src/Interrupt_labs/secondlab_3_T.c:64:6:dummy_delay	24	static
-../Src/Interrupt_labs/secondlab_3_T.c:68:6:victory	8	static
-../Src/Interrupt_labs/secondlab_3_T.c:77:6:defeat	16	static
-../Src/Interrupt_labs/secondlab_3_T.c:103:6:try	4	static
