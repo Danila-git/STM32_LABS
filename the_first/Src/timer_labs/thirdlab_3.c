@@ -14,11 +14,10 @@ int main (void)
 	    GPIOE->MODER &= ~(GPIO_MODER_MODE5_Msk);
 	    GPIOE->MODER |=  2 << GPIO_MODER_MODE5_Pos;
 
-	    //делаю задержку 2 секунды
+	    //настраиваю прерывания каждые 2 секунды
 	    TIM2->PSC = 7999;
-	        TIM2->ARR = 1999;
-	        TIM2->DIER |= TIM_DIER_UIE;
-
+	    TIM2->ARR = 1999;
+	    TIM2->DIER |= TIM_DIER_UIE;
 
 	    GPIOE->AFR[0] |=  2 << GPIO_AFRL_AFSEL5_Pos;
 
@@ -46,10 +45,10 @@ int main (void)
 void TIM2_IRQHandler (void)
 {
 	if (percent < 80) {
-	            percent += 20;
-	        } else {
-	            percent = 20;
-	        }
+		percent += 20;
+	} else {
+		percent = 20;
+	}
 	TIM3->CCR4 = (800 * percent) / 100;
     TIM2->SR &= ~ TIM_SR_UIF;
 }
