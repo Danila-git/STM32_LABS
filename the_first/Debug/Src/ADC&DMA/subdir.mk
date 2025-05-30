@@ -5,13 +5,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Src/ADC&DMA/fourthlaba_2.c 
+../Src/ADC&DMA/fourthlaba_3_t.c 
 
 OBJS += \
-./Src/ADC&DMA/fourthlaba_2.o 
+./Src/ADC&DMA/fourthlaba_3_t.o 
 
 C_DEPS += \
-./Src/ADC&DMA/fourthlaba_2.d 
+./Src/ADC&DMA/fourthlaba_3_t.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -21,7 +21,7 @@ Src/ADC&DMA/%.o Src/ADC&DMA/%.su Src/ADC&DMA/%.cyclo: ../Src/ADC&DMA/%.c Src/ADC
 clean: clean-Src-2f-ADC-26-DMA
 
 clean-Src-2f-ADC-26-DMA:
-	-$(RM) ./Src/ADC&DMA/fourthlaba_2.cyclo ./Src/ADC&DMA/fourthlaba_2.d ./Src/ADC&DMA/fourthlaba_2.o ./Src/ADC&DMA/fourthlaba_2.su
+	-$(RM) ./Src/ADC&DMA/fourthlaba_3_t.cyclo ./Src/ADC&DMA/fourthlaba_3_t.d ./Src/ADC&DMA/fourthlaba_3_t.o ./Src/ADC&DMA/fourthlaba_3_t.su
 
 .PHONY: clean-Src-2f-ADC-26-DMA
 

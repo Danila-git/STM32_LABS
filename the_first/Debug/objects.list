@@ -1,4 +1,4 @@
-"./Src/Interrupt_labs/secondlab_1_T.o"
+"./Src/ADC&DMA/fourthlaba_3_t.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"
 "./Startup/startup_stm32g474vetx.o"

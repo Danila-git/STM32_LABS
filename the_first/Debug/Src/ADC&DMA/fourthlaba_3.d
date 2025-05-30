@@ -1,4 +1,4 @@
-Src/Interrupt_labs/secondlab_1_T.o: ../Src/Interrupt_labs/secondlab_1_T.c \
+Src/ADC&DMA/fourthlaba_3.o: ../Src/ADC&DMA/fourthlaba_3.c \
  ../Inc/stm32g474xx.h D:/STM32_LABS/the_first/Inc/CMSIS/core_cm4.h \
  D:/STM32_LABS/the_first/Inc/CMSIS/cmsis_version.h \
  D:/STM32_LABS/the_first/Inc/CMSIS/cmsis_compiler.h \

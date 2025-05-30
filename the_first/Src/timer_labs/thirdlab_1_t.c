@@ -10,7 +10,7 @@ int main(void)
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIODEN;
 
 	//настройка прерывания на каждые 10 милисекунд
-	Timer_Delay_ms(300);
+	Timer_Delay_ms(10);
 	NVIC_EnableIRQ(TIM2_IRQn);
 
 	GPIOD->MODER &= ~GPIO_MODER_MODE6_Msk;
@@ -28,6 +28,8 @@ void TIM2_IRQHandler(void)
 	TIM2->SR &= ~ TIM_SR_UIF;
 }
 
+
+//значение параметра функции = времени задержки в миллисекундах
 void Timer_Delay_ms(uint32_t milliseconds) {
     if (milliseconds < 2)
     	{
