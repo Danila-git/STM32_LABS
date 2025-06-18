@@ -34,7 +34,6 @@ int main() {
 	ADC2->SMPR1 |= 2 << ADC_SMPR1_SMP6_Pos;
 	ADC2->SQR1 |= 0 << ADC_SQR1_L_Pos | 6 << ADC_SQR1_SQ1_Pos;
 
-	ADC2->CFGR |= ADC_CFGR_CONT;
 	ADC2->CR |= ADC_CR_ADSTART;
 
 	//настройка таймера и его прерывания
@@ -54,27 +53,14 @@ void dummy_delay(uint32_t duration) {
 }
 
 void TIM2_IRQHandler(void) {
+	ADC2->CR |= ADC_CR_ADSTART;
 	ADC2->ISR |= ADC_ISR_EOC;
 	data = ADC2->DR;
-
-	//формула для преобразования промежутка [0;4095] в промежуток [99;1999]
-	frequency_change = 99 + ((uint32_t) data * (1999 - 99)) / 4095;
+	//формула для преобразования промежутка [0;4094] в промежуток [99;1999]
+	frequency_change = 99 + ((uint32_t) data * (1999 - 99)) / 4094;
 	TIM2->ARR = (uint32_t) frequency_change;
 	GPIOE->BSRR = GPIO_BSRR_BR4 | GPIO_BSRR_BR5 | GPIO_BSRR_BR6 | GPIO_BSRR_BR7;
-	switch (current_led) {
-	case 0:
-		GPIOE->BSRR = GPIO_BSRR_BS7;
-		break;
-	case 1:
-		GPIOE->BSRR = GPIO_BSRR_BS6;
-		break;
-	case 2:
-		GPIOE->BSRR = GPIO_BSRR_BS5;
-		break;
-	case 3:
-		GPIOE->BSRR = GPIO_BSRR_BS4;
-		break;
-	}
+	GPIOE->BSRR = 1 << (GPIO_BSRR_BS4_Pos + current_led);
 	current_led++;
 	if (current_led > 3) {
 		current_led = 0;

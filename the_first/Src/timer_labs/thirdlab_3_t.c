@@ -28,7 +28,7 @@ int main (void)
 	TIM3->CCMR2 |= TIM_CCMR2_OC3PE | 6 << TIM_CCMR2_OC3M_Pos;
 	TIM3->CCER |= TIM_CCER_CC4E;
 	TIM3->CR1 |= TIM_CR1_ARPE;
-	TIM3->CCR4 = (800 * percent) / 100;
+	TIM3->CCR4 = (799 * percent) / 100;
 
 	TIM3->CR1 |= TIM_CR1_CEN;
 	TIM2->CR1 |= TIM_CR1_CEN;

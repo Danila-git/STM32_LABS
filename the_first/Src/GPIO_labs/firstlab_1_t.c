@@ -28,11 +28,15 @@ int main(void) {
 			button_is_pressed = 0;
 		}
 		if (pressed == 1)
+		{
 			defeat();
 		GPIOE->BSRR = GPIO_BSRR_BR3 | GPIO_BSRR_BR4 | GPIO_BSRR_BR5 | GPIO_BSRR_BR6;
+		}
 		 if (pressed == 0)
+		 {
 			victory();
 		 GPIOE->BSRR = GPIO_BSRR_BR3 | GPIO_BSRR_BR4 | GPIO_BSRR_BR5 | GPIO_BSRR_BR6;
+		 }
 }
 }
 

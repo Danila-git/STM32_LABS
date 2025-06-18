@@ -18,7 +18,7 @@ int main(void) {
 			| 0 << GPIO_MODER_MODE14_Pos;
 
 	while (1) {
-		if ((GPIOB->IDR & GPIO_IDR_ID12) == 0 && pressed1){
+		if ((GPIOB->IDR & GPIO_IDR_ID12) == 0 && pressed1 && count < 15){
 			GPIOD->BSRR = GPIO_BSRR_BR9 | GPIO_BSRR_BR10
 					| GPIO_BSRR_BR11 | GPIO_BSRR_BR12;
 			count += 1;
@@ -28,7 +28,7 @@ int main(void) {
 		{
 			pressed1 = 1;
 		}
-		if ((GPIOB->IDR & GPIO_IDR_ID13) == 0 && pressed2 && count >=1){
+		if ((GPIOB->IDR & GPIO_IDR_ID13) == 0 && pressed2 && count > 0){
 			GPIOD->BSRR = GPIO_BSRR_BR9 | GPIO_BSRR_BR10
 								| GPIO_BSRR_BR11 | GPIO_BSRR_BR12;
 					count -=1;
@@ -39,7 +39,7 @@ int main(void) {
 					pressed2 = 1;
 				}
 		if ((GPIOB->IDR & GPIO_IDR_ID14) == 0){
-							GPIOD->ODR = 0b0;
+							GPIOD->BSRR = GPIO_BSRR_BR9 | GPIO_BSRR_BR10 | GPIO_BSRR_BR11 | GPIO_BSRR_BR12;
 							count = 0;
 		}
 	}

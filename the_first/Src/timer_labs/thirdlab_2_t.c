@@ -1,7 +1,5 @@
 #include "stm32g474xx.h"
 
-uint32_t frec_change = 15999;
-
 int main(void) {
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIODEN | RCC_AHB2ENR_GPIOBEN;
 	RCC->APB1ENR1 |= RCC_APB1ENR1_TIM2EN;
@@ -19,11 +17,10 @@ int main(void) {
 	GPIOB->MODER &= ~GPIO_MODER_MODE12_Msk;
 
 	//настройка прерывания каждые 2 секунды
-	TIM2->PSC = frec_change;
+	TIM2->PSC = 15999;
 	TIM2->ARR = 1999;
 	TIM2->DIER = TIM_DIER_UIE;
 	TIM2->CR1 |= TIM_CR1_CEN;
-
 	NVIC_EnableIRQ(TIM2_IRQn);
 
 	while (1) {

@@ -1,6 +1,7 @@
 #include "stm32g474xx.h"
 
 uint16_t data;
+uint32_t led_amount_on;
 void dummy_delay();
 void value_selection();
 
@@ -31,7 +32,6 @@ int main() {
 	ADC2->SMPR1 |= 2 << ADC_SMPR1_SMP6_Pos;
 	ADC2->SQR1 |= 0 << ADC_SQR1_L_Pos | 6 << ADC_SQR1_SQ1_Pos;
 
-	ADC2->CFGR |= ADC_CFGR_CONT;
 	ADC2->CR |= ADC_CR_ADSTART;
 
 	while (1) {
@@ -44,20 +44,13 @@ void dummy_delay(uint32_t duration) {
 }
 
 void value_selection() {
-	ADC2->ISR |= ADC_ISR_EOC;
+	ADC2->CR |= ADC_CR_ADSTART;
+	 while (!(ADC2->ISR & ADC_ISR_EOC));
 	if (ADC2->ISR & ADC_ISR_EOC) {
 		data = ADC2->DR;
+		led_amount_on = data*4/4094;
 		GPIOE->BSRR = GPIO_BSRR_BR7 | GPIO_BSRR_BR6 | GPIO_BSRR_BR5 | GPIO_BSRR_BR4;
-		if (data > 10 && data < 4096 * 0.25) {
-			GPIOE->BSRR = GPIO_BSRR_BS7;
-		} else if (data >= 4096 * 0.25 && data < 4096 * 0.5) {
-			GPIOE->BSRR = GPIO_BSRR_BS7 | GPIO_BSRR_BS6;
-		} else if (data >= 4096 * 0.5 && data < 4096 * 0.75) {
-			GPIOE->BSRR = GPIO_BSRR_BS7 | GPIO_BSRR_BS6 | GPIO_BSRR_BS5;
-		} else if (data >= 4096 * 0.75) {
-			GPIOE->BSRR = GPIO_BSRR_BS7 | GPIO_BSRR_BS6 | GPIO_BSRR_BS5 | GPIO_BSRR_BS4;
-		} else {
-			GPIOE->BSRR = GPIO_BSRR_BR7 | GPIO_BSRR_BR6 | GPIO_BSRR_BR5 | GPIO_BSRR_BR4;
-		}
+		GPIOE->BSRR = (1 << led_amount_on + 4) - 1;
+
 	}
 }

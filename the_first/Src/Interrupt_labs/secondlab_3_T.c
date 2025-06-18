@@ -4,6 +4,7 @@ char key[5] = "";
 char key_word[5] = "abcd";
 int enter_nums = 0;
 
+uint32_t get = 0;
 uint32_t pressed1 = 0;
 uint32_t pressed2 = 0;
 uint32_t pressed3 = 0;
@@ -34,34 +35,46 @@ int main() {
 			| GPIO_MODER_MODE14_Msk | GPIO_MODER_MODE15_Msk);
 
 	while (1) {
-
+		if (get) {
+			if (exception < 3) {
+				try();
+				get = 0;
+			} else {
+				GPIOE->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2
+						| GPIO_BSRR_BR3;
+				defeat();
+				get = 1;
+			}
 	}
+	if (pressed1 == 1 && pressed2 == 1 && pressed3 == 1 && pressed4 == 1) {
+		if (strncmp(key, key_word, 5) == 0) {
+			GPIOE->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2
+					| GPIO_BSRR_BR3;
+			victory();
 
+		} else {
+			GPIOE->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2
+					| GPIO_BSRR_BR3;
+			for (int i = 0; i <= 4; i++) {
+				defeat();
+			}
+			exception++;
+			pressed1 = 0;
+			pressed2 = 0;
+			pressed3 = 0;
+			pressed4 = 0;
+			enter_nums = 0;
+			get = 0;
+		}
+	}
+	}
 }
+
 
 void EXTI15_10_IRQHandler()
 {
-	if (exception < 3) {
-				try();
-			} else {
-				GPIOE->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2 | GPIO_BSRR_BR3;
-				defeat();
-			}
-			if (pressed1 == 1 && pressed2 == 1 && pressed3 == 1 && pressed4 == 1) {
-				if (strncmp(key, key_word, 5) == 0) {
-					GPIOE->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2 | GPIO_BSRR_BR3;
-					victory();
-				} else {
-					GPIOE->BSRR = GPIO_BSRR_BR0 | GPIO_BSRR_BR1 | GPIO_BSRR_BR2 | GPIO_BSRR_BR3;
-					defeat();
-					exception++;
-					pressed1 = 0;
-					pressed2 = 0;
-					pressed3 = 0;
-					pressed4 = 0;
-					enter_nums = 0;
-				}
-			}
+	get = 1;
+	EXTI->PR1 |= EXTI_PR1_PIF12 | EXTI_PR1_PIF13 | EXTI_PR1_PIF14 | EXTI_PR1_PIF15;
 }
 
 void dummy_delay(uint32_t duration) {
@@ -78,7 +91,6 @@ void victory() {
 	GPIOE->ODR &= ~(GPIO_ODR_OD1 | GPIO_ODR_OD2);
 }
 void defeat() {
-	for (int i = 0; i <= 4; i++) {
 		GPIOE->ODR |= GPIO_ODR_OD0;
 		dummy_delay(100000);
 		GPIOE->ODR &= ~GPIO_ODR_OD0;
@@ -100,10 +112,9 @@ void defeat() {
 		GPIOE->ODR |= GPIO_ODR_OD0;
 		dummy_delay(100000);
 		GPIOE->ODR &= ~GPIO_ODR_OD0;
-	}
 }
 
-void try() {
+void try(uint32_t turn_on12,uint32_t turn_on13, uint32_t turn_on14,uint32_t turn_on15) {
 	if ((GPIOB->IDR & GPIO_IDR_ID12) == 0 && pressed1 == 0) {
 		GPIOE->BSRR = GPIO_BSRR_BS0;
 		key[enter_nums] = 'a';

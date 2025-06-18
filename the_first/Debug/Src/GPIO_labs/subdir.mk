@@ -5,13 +5,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Src/GPIO_labs/firstlab_B2.c 
+../Src/GPIO_labs/thirdlab_3_t.c 
 
 OBJS += \
-./Src/GPIO_labs/firstlab_B2.o 
+./Src/GPIO_labs/thirdlab_3_t.o 
 
 C_DEPS += \
-./Src/GPIO_labs/firstlab_B2.d 
+./Src/GPIO_labs/thirdlab_3_t.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -21,7 +21,7 @@ Src/GPIO_labs/%.o Src/GPIO_labs/%.su Src/GPIO_labs/%.cyclo: ../Src/GPIO_labs/%.c
 clean: clean-Src-2f-GPIO_labs
 
 clean-Src-2f-GPIO_labs:
-	-$(RM) ./Src/GPIO_labs/firstlab_B2.cyclo ./Src/GPIO_labs/firstlab_B2.d ./Src/GPIO_labs/firstlab_B2.o ./Src/GPIO_labs/firstlab_B2.su
+	-$(RM) ./Src/GPIO_labs/thirdlab_3_t.cyclo ./Src/GPIO_labs/thirdlab_3_t.d ./Src/GPIO_labs/thirdlab_3_t.o ./Src/GPIO_labs/thirdlab_3_t.su
 
 .PHONY: clean-Src-2f-GPIO_labs
 

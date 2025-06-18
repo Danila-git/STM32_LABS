@@ -31,7 +31,7 @@ int main(void) {
 			}
 			else if(GPIOB->IDR & GPIO_IDR_ID12 &&  click > time)
 		{
-			GPIOD->ODR= 0b0;
+				GPIOD->BSRR = GPIO_BSRR_BR9 | GPIO_BSRR_BR10 | GPIO_BSRR_BR11 | GPIO_BSRR_BR12;
 			click = 0;
 			turnon = 0;
 		}

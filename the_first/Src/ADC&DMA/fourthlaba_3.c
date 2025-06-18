@@ -40,7 +40,6 @@ int main() {
 
 	TIM2->CR1 |= TIM_CR1_CEN;
 
-	ADC2->CFGR |= ADC_CFGR_CONT;
 	ADC2->CR |= ADC_CR_ADSTART;
 
 	while (1) {
@@ -49,6 +48,7 @@ int main() {
 }
 
 void TIM2_IRQHandler(void) {
+	ADC2->CR |= ADC_CR_ADSTART;
 	ADC2->ISR |= ADC_ISR_EOC;
 	if (ADC2->ISR & ADC_ISR_EOC) {
 		setup_adc_dma(adc_data);
